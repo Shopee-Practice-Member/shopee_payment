@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="2023_09_19_0" author="huy" labels="2023_19_09_CREATE_WALLET_TABLE" runOnChange="true">
+        <sqlFile path="classpath:db/sql/2023_19_09_CREATE_WALLET_TABLE.sql"></sqlFile>
+    </changeSet>
+    <changeSet id="2023_09_20_0" author="huy" labels="2023_20_09_ADD_OWNER_ID_IN_MONEY_TRANSACTION_TABLE" runOnChange="true">
+        <sqlFile path="classpath:db/sql/2023_20_09_ADD_OWNER_ID_IN_MONEY_TRANSACTION_TABLE.sql"></sqlFile>
+    </changeSet>
+</databaseChangeLog>
