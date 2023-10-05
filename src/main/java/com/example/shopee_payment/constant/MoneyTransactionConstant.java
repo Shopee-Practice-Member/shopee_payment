@@ -1,6 +1,6 @@
-package com.example.shopee_payment.variable;
+package com.example.shopee_payment.constant;
 
-public class MoneyTransactionVariable {
+public class MoneyTransactionConstant {
 
     public enum TransactionStatus {
         PENDING("Pending"),

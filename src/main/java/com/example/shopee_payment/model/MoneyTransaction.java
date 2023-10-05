@@ -1,6 +1,6 @@
 package com.example.shopee_payment.model;
 
-import com.example.shopee_payment.variable.MoneyTransactionVariable;
+import com.example.shopee_payment.constant.MoneyTransactionConstant;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,11 +44,11 @@ public class MoneyTransaction {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private MoneyTransactionVariable.TargetType targetType;
+    private MoneyTransactionConstant.TargetType targetType;
 
     @Column
     @Enumerated(EnumType.STRING)
-    private MoneyTransactionVariable.TransactionStatus transactionStatus;
+    private MoneyTransactionConstant.TransactionStatus transactionStatus;
 
     @Column
     private float amount;
@@ -58,7 +58,7 @@ public class MoneyTransaction {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private MoneyTransactionVariable.BillType billType;
+    private MoneyTransactionConstant.BillType billType;
 
 
 }

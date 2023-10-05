@@ -12,9 +12,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Component;
 
-import static com.example.shopee_payment.variable.KafkaVariable.PAY_FOR_ORDER_TOPIC;
-import static com.example.shopee_payment.variable.KafkaVariable.UPDATE_ORDER_AFTER_PAID;
-import static com.example.shopee_payment.variable.MoneyTransactionVariable.NAME_SERVICE;
+import static com.example.shopee_payment.constant.KafkaConstant.ORDER_TO_PAYMENT_REQUEST_TOPIC;
+import static com.example.shopee_payment.constant.KafkaConstant.PAYMENT_TO_ORDER_RESPONSE_TOPIC;
+import static com.example.shopee_payment.constant.MoneyTransactionConstant.NAME_SERVICE;
 
 @Component
 @Log4j2
@@ -26,7 +26,7 @@ public class OrderMessageConsumer {
     @Autowired
     KafkaService kafkaService;
 
-    public static final String TOPIC = PAY_FOR_ORDER_TOPIC;
+    public static final String TOPIC = ORDER_TO_PAYMENT_REQUEST_TOPIC;
     private static final String PARTITIONS = "#{@finder.partitions('" + TOPIC + "')}";
 
 
@@ -46,7 +46,7 @@ public class OrderMessageConsumer {
                 .build();
         var paidOrderMessage = JsonConverter.writeValueAsString(paidOrderMessageDto);
 
-        kafkaService.sendMessage(UPDATE_ORDER_AFTER_PAID, paidOrderMessage);
+        kafkaService.sendMessage(PAYMENT_TO_ORDER_RESPONSE_TOPIC, paidOrderMessage);
     }
 
 }

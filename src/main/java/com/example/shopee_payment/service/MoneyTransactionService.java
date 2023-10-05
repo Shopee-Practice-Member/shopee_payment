@@ -5,7 +5,7 @@ import com.example.shopee_payment.dto.request.TransferMoneyCreateRequestDto;
 import com.example.shopee_payment.model.MoneyTransaction;
 import com.example.shopee_payment.model.Wallet;
 import com.example.shopee_payment.repository.MoneyTransactionRepository;
-import com.example.shopee_payment.variable.MoneyTransactionVariable;
+import com.example.shopee_payment.constant.MoneyTransactionConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,21 +27,21 @@ public class MoneyTransactionService {
         var wallet = walletService.getWalletById(order.getWalletId());
 
         MoneyTransaction moneyTransaction = new MoneyTransaction();
-        moneyTransaction.setBillType(MoneyTransactionVariable.BillType.WITHDRAW);
+        moneyTransaction.setBillType(MoneyTransactionConstant.BillType.WITHDRAW);
         moneyTransaction.setAmount(order.getPrice());
-        moneyTransaction.setTransactionStatus(MoneyTransactionVariable.TransactionStatus.IN_PROGRESS);
+        moneyTransaction.setTransactionStatus(MoneyTransactionConstant.TransactionStatus.IN_PROGRESS);
         moneyTransaction.setMessage(order.getMessage());
         moneyTransaction.setTargetId(order.getId());
-        moneyTransaction.setTargetType(MoneyTransactionVariable.TargetType.PAY_FOR_BILL);
+        moneyTransaction.setTargetType(MoneyTransactionConstant.TargetType.PAY_FOR_BILL);
         moneyTransaction.setWalletId(order.getWalletId());
         moneyTransaction.setOwnerId(wallet.getOwnerId());
         var savedMoneyTransaction = moneyTransactionRepository.saveAndFlush(moneyTransaction);
 
         try {
             walletService.withDraw(order.getWalletId(), order.getPrice());
-            savedMoneyTransaction.setTransactionStatus(MoneyTransactionVariable.TransactionStatus.PAID);
+            savedMoneyTransaction.setTransactionStatus(MoneyTransactionConstant.TransactionStatus.PAID);
         } catch (Exception e) {
-            savedMoneyTransaction.setTransactionStatus(MoneyTransactionVariable.TransactionStatus.FAILED);
+            savedMoneyTransaction.setTransactionStatus(MoneyTransactionConstant.TransactionStatus.FAILED);
         }
 
         var savedTransaction = moneyTransactionRepository.save(savedMoneyTransaction);
@@ -78,11 +78,11 @@ public class MoneyTransactionService {
 
     private Boolean withDrawByTransferingMoney(TransferMoneyCreateRequestDto transferMoneyCreateRequestDto, Wallet wallet) {
         MoneyTransaction moneyTransaction = new MoneyTransaction();
-        moneyTransaction.setBillType(MoneyTransactionVariable.BillType.WITHDRAW);
+        moneyTransaction.setBillType(MoneyTransactionConstant.BillType.WITHDRAW);
         moneyTransaction.setAmount(transferMoneyCreateRequestDto.getAmount());
-        moneyTransaction.setTransactionStatus(MoneyTransactionVariable.TransactionStatus.IN_PROGRESS);
+        moneyTransaction.setTransactionStatus(MoneyTransactionConstant.TransactionStatus.IN_PROGRESS);
         moneyTransaction.setMessage(transferMoneyCreateRequestDto.getMessage());
-        moneyTransaction.setTargetType(MoneyTransactionVariable.TargetType.WALLET);
+        moneyTransaction.setTargetType(MoneyTransactionConstant.TargetType.WALLET);
         moneyTransaction.setTargetId(transferMoneyCreateRequestDto.getToWalletOwnerId());
 
         moneyTransaction.setOwnerId(wallet.getOwnerId());
@@ -91,10 +91,10 @@ public class MoneyTransactionService {
 
         try {
             walletService.withDraw(wallet.getId(), transferMoneyCreateRequestDto.getAmount());
-            savedMoneyTransaction.setTransactionStatus(MoneyTransactionVariable.TransactionStatus.PAID);
+            savedMoneyTransaction.setTransactionStatus(MoneyTransactionConstant.TransactionStatus.PAID);
             moneyTransactionRepository.save(savedMoneyTransaction);
         } catch (Exception e) {
-            savedMoneyTransaction.setTransactionStatus(MoneyTransactionVariable.TransactionStatus.FAILED);
+            savedMoneyTransaction.setTransactionStatus(MoneyTransactionConstant.TransactionStatus.FAILED);
             moneyTransactionRepository.save(savedMoneyTransaction);
             return false;
         }
@@ -104,11 +104,11 @@ public class MoneyTransactionService {
     private Boolean depositByReceivingMoney(TransferMoneyCreateRequestDto transferMoneyCreateRequestDto, Wallet wallet) {
 
         MoneyTransaction moneyTransaction = new MoneyTransaction();
-        moneyTransaction.setBillType(MoneyTransactionVariable.BillType.DEPOSIT);
+        moneyTransaction.setBillType(MoneyTransactionConstant.BillType.DEPOSIT);
         moneyTransaction.setAmount(transferMoneyCreateRequestDto.getAmount());
-        moneyTransaction.setTransactionStatus(MoneyTransactionVariable.TransactionStatus.IN_PROGRESS);
+        moneyTransaction.setTransactionStatus(MoneyTransactionConstant.TransactionStatus.IN_PROGRESS);
         moneyTransaction.setMessage(transferMoneyCreateRequestDto.getMessage());
-        moneyTransaction.setTargetType(MoneyTransactionVariable.TargetType.WALLET);
+        moneyTransaction.setTargetType(MoneyTransactionConstant.TargetType.WALLET);
         moneyTransaction.setTargetId(transferMoneyCreateRequestDto.getFromWalletOwnerId());
 
         moneyTransaction.setOwnerId(wallet.getOwnerId());
@@ -117,11 +117,11 @@ public class MoneyTransactionService {
 
         try {
             walletService.deposit(wallet.getId(), transferMoneyCreateRequestDto.getAmount());
-            savedMoneyTransaction.setTransactionStatus(MoneyTransactionVariable.TransactionStatus.PAID);
+            savedMoneyTransaction.setTransactionStatus(MoneyTransactionConstant.TransactionStatus.PAID);
             moneyTransactionRepository.save(savedMoneyTransaction);
 
         } catch (Exception e) {
-            savedMoneyTransaction.setTransactionStatus(MoneyTransactionVariable.TransactionStatus.FAILED);
+            savedMoneyTransaction.setTransactionStatus(MoneyTransactionConstant.TransactionStatus.FAILED);
             moneyTransactionRepository.save(savedMoneyTransaction);
             return false;
         }

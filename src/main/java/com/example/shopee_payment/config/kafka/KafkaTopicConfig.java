@@ -1,6 +1,6 @@
 package com.example.shopee_payment.config.kafka;
 
-import com.example.shopee_payment.variable.KafkaVariable;
+import com.example.shopee_payment.constant.KafkaConstant;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,11 +27,11 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic initPayForOrderTopic() {
-        return new NewTopic(KafkaVariable.PAY_FOR_ORDER_TOPIC, 2, (short) 1);
+        return new NewTopic(KafkaConstant.ORDER_TO_PAYMENT_REQUEST_TOPIC, 2, (short) 1);
     }
 
     @Bean
     public NewTopic initUpdateOrderAfterPaid() {
-        return new NewTopic(KafkaVariable.UPDATE_ORDER_AFTER_PAID, 2, (short) 1);
+        return new NewTopic(KafkaConstant.PAYMENT_TO_ORDER_RESPONSE_TOPIC, 2, (short) 1);
     }
 }
