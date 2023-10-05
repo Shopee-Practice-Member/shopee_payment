@@ -6,7 +6,7 @@ import com.example.shopee_payment.model.UserAccount;
 
 public class UserAccountMapper {
 
-    public static UserAccount dtoToEntity(UserAccountCreateRequestDto dto) {
+    public static UserAccount mapToEntity(UserAccountCreateRequestDto dto) {
         UserAccount userAccount = new UserAccount();
         userAccount.setFirstName(dto.getFirstName());
         userAccount.setLastName(dto.getLastName());
